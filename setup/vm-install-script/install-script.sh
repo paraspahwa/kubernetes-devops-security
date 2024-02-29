@@ -81,4 +81,8 @@ sudo systemctl start jenkins
 sudo usermod -a -G docker jenkins
 echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+echo ".........----------------#################._.-.-Docker-Container-.-._.#################----------------........."
+
+docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECK_DISABLE=true -p 9000:9000 sonarqube:latest
+
 echo ".........----------------#################._.-.-COMPLETED-.-._.#################----------------........."
