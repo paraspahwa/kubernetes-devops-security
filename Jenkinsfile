@@ -18,9 +18,14 @@ pipeline {
                 sh "mvn org.pitest:pitest-maven:mutationCoverage"
             }
         }
+        stage('Sonarqube - SAST') {
+            steps {
+                sh "mvn clean verify sonar:sonar -Dsonar.projectKey=newproject -Dsonar.projectName='newproject' -Dsonar.host.url=http://43.205.115.96:9000 -Dsonar.token=sqp_475898385ce408f7bb0132b58fbf119e3b1e4d1b"
+            }
+        }
         stage('Docker Build and Push') {
             steps {
-                withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
+                withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
                     sh 'printenv'
                     sh 'docker build -t paraspahwa/numeric-app:""$GIT_COMMIT"" .'
                     sh 'docker push paraspahwa/numeric-app:""$GIT_COMMIT""'
@@ -37,3 +42,5 @@ pipeline {
         }
     }
 }   
+
+
