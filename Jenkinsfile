@@ -23,6 +23,10 @@ pipeline {
                 withSonarQubeEnv('sonarscanner')
                 sh "mvn clean verify sonar:sonar -Dsonar.projectKey=newproject -Dsonar.projectName='newproject' -Dsonar.host.url=http://43.205.115.96:9000"
             }
+            timeout(time: 2, unit: 'MINUTES') {
+                script {
+                   waitForQualityGate abortPipeline: true
+           }
         }
         stage('Docker Build and Push') {
             steps {
