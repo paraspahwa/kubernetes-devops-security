@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Sonarqube - SAST') {
             steps {
-                sh "mvn clean verify sonar:sonar -Dsonar.projectKey=newproject -Dsonar.projectName='newproject' -Dsonar.host.url=http://43.205.115.96:9000 -Dsonar.token=sonar-token"
+                sh "mvn sonar:sonar -Dsonar.projectKey=newproject -Dsonar.projectName='newproject' -Dsonar.host.url=http://43.205.115.96:9000 -Dsonar.token=sonar-token"
             }
         }
         stage('Docker Build and Push') {
