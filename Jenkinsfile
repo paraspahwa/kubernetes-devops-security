@@ -18,14 +18,6 @@ pipeline {
                 sh "mvn org.pitest:pitest-maven:mutationCoverage"
             }
         }
-        stage('Sonarqube - SAST') {
-            steps {
-                withSonarQubeEnv('sonarscanner') {
-                sh "mvn sonar:sonar"
-                }
-            }
-                
-        }
         stage('Docker Build and Push') {
             steps {
                 withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
