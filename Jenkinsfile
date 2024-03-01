@@ -18,6 +18,28 @@ pipeline {
                 sh "mvn org.pitest:pitest-maven:mutationCoverage"
             }
         }
+        stage('Sonarqube - SAST') {
+            steps {
+                withSonarQubeEnv('Sonarscanner') {
+                    sh "mvn sonar:sonar -Dsonar.projectKey=numeric-appication -Dsonar.host.url=http://3.109.144.253:9000"
+                }
+                timeout(time: 2, unit: 'MINUTES') {
+                    script {
+                        waitForQualityGate abortPipeline: true
+                    }
+                } 
+            }
+        }
+        stage('Vulnerability Scan - Docker') {
+            steps {
+                sh "mvn dependency-check:check"
+            }
+             post {
+                always {
+                    dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+                }
+             }
+        }
         stage('Docker Build and Push') {
             steps {
                 withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
