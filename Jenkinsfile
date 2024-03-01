@@ -18,6 +18,11 @@ pipeline {
                 sh "mvn org.pitest:pitest-maven:mutationCoverage"
             }
         }
+        stage('Sonarqube - SAST') {
+            steps {
+                sh "mvn clean verify sonar:sonar -Dsonar.projectKey=numeric-appication -Dsonar.projectName='numeric-appication' -Dsonar.host.url=http://3.109.144.253:9000 -Dsonar.token=sqp_7bf09e9d1e3847379ce00a717586bff07f480e35"
+            }
+        }
         stage('Docker Build and Push') {
             steps {
                 withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
